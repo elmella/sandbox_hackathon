@@ -1,0 +1,26 @@
+[
+    {
+        "sponsor_name": "McDonalds",
+        "sponsor_logo": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "sponsor_url": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "redeem_cost": 50
+    },
+    {
+        "sponsor_name": "Marriott",
+        "sponsor_logo": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "sponsor_url": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "redeem_cost": 1000
+    },
+    {
+        "sponsor_name": "Nike",
+        "sponsor_logo": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "sponsor_url": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "redeem_cost": 250
+    },
+    {
+        "sponsor_name": "Wendy's",
+        "sponsor_logo": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "sponsor_url": "https://checktaiphotos.s3.us-east-2.amazonaws.com/test-1706311155607.jpg",
+        "redeem_cost": 75
+    }
+]
