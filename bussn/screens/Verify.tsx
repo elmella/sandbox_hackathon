@@ -25,12 +25,6 @@ type VerifyScreenNavigationProp = StackNavigationProp<
 >;
 
 
-const s3 = new S3({
-  accessKeyId: "AKIATGM7VQYHQV5QRK5L",
-  secretAccessKey: "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",
-  region: "us-east-2",
-});
-
 
 
 
