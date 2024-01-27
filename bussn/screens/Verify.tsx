@@ -26,6 +26,14 @@ type VerifyScreenNavigationProp = StackNavigationProp<
 
 
 
+const s3 = new S3({
+  accessKeyId: "AKIATGM7VQYHQV5QRK5L",
+  secretAccessKey: "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",
+  region: "us-east-2",
+});
+
+
+
 
 
 const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) => {
@@ -102,12 +110,22 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
         const selfiePhotoUrl = await uploadToS3(selfiePhoto, generatePhotoId());
         setSelfiePhotoUrl(selfiePhotoUrl as string | null);
       }
+  
+      // Navigate to the LocationScreen if both photos have been successfully uploaded
+      if (busPhotoUrl && selfiePhotoUrl) {
+        navigation.navigate('LocationScreen', {
+          bus_id: bus_id,
+          bus_url: busPhotoUrl,
+          selfie_url: selfiePhotoUrl
+        });
+      }
     } catch (error) {
       console.error("Error uploading photos:", error);
     } finally {
       // setIsLoading(false);
     }
   }
+  
   
   
   

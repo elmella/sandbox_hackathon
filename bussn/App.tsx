@@ -9,7 +9,7 @@ import Account from "./screens/Account";
 import Redeem from "./screens/Redeem";
 import Qrcode from "./screens/Qrcode";
 import Verify from "./screens/Verify";
-// import Location from "./screens/Location";
+import LocationScreen from "./screens/LocationScreen";
 import { RootStackParamList } from "./types";
 import SplashScreen from "./screens/SplashScreen";
 
@@ -37,7 +37,7 @@ export default function App() {
         <stack.Screen name="Redeem" component={Redeem} />
         <stack.Screen name="Qrcode" component={Qrcode} />
         <stack.Screen name="Verify" component={Verify} />
-        {/* <stack.Screen name="Location" component={Location} /> */}
+        <stack.Screen name="LocationScreen" component={LocationScreen} />
       </stack.Navigator>
       ) : (
         <SplashScreen />
