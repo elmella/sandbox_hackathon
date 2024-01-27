@@ -42,4 +42,23 @@ class Users(models.Model):
 
     def __str__(self):
         return f"{self.user_id} - {self.profile_url}"
+    
+    
+    from django.db import models
+
+class Sponsor(models.Model):
+    sponsor_name = models.CharField(max_length=200)
+    sponsor_logo = models.URLField()
+    sponsor_url = models.URLField()
+    redeem_cost = models.IntegerField()
+
+    class Meta:
+        verbose_name = "Sponsor"
+        verbose_name_plural = "Sponsors"
+
+    def __str__(self):
+        return self.sponsor_name
+    
+    
+
 

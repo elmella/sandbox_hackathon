@@ -97,3 +97,12 @@ def parse_location(location_str):
     # Convert each part to a float and return as a tuple
     return tuple(float(part) for part in parts)
 
+
+# from django.http import JsonResponse
+# from .models import BusRoute
+
+# def view_bus_routes(request):
+#     bus_routes = BusRoute.objects.all()
+#     bus_routes_list = list(bus_routes.values())
+#     return bus_routes_list
+

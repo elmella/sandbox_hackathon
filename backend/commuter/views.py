@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from .models import Rides, BusRoute, Users
 from helper_functions import parse_locations, check_image, verify_location, parse_location
 import json
+from django.http import JsonResponse
+from .models import Rides, Users 
 
 
 @csrf_exempt
@@ -71,7 +73,7 @@ def create_ride(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def get_user_rides(request):
+def home_screen(request):
     user_id = request.user.id
     user = Users.objects.get(user_id=user_id)
     rides = Rides.objects.filter(user_id=user_id).values('date_time', 'selfie_url')
@@ -86,6 +88,35 @@ def get_user_rides(request):
         })
     
     return JsonResponse(response, safe=False)
+
+
+def get(request):
+    user_id = request.GET.get('user_id')
+    # Get the user
+    user = User.objects.get(id=user_id)
+
+    # Get the rides for the user
+    rides = Rides.objects.filter(user_id=user_id)
+
+    # Calculate the points
+    points = rides.count() * 10
+
+    # Get the ride dates
+    ride_dates = [ride.date_time.strftime('%Y-%m-%d') for ride in rides]
+
+    # Prepare the data
+    data = {
+        'name': user.name,
+        'profile_url': user.profile_url,
+        'points': points,
+        'ride_dates': ride_dates,
+    }
+
+    # Return a JSON response
+    return JsonResponse(data)
+
+
+
 
 
 
