@@ -89,7 +89,8 @@ def home_screen(request):
     
     return JsonResponse(response, safe=False)
 
-
+@csrf_exempt
+@require_http_methods(["GET"])
 def get(request):
     user_id = request.GET.get('user_id')
     # Get the user
