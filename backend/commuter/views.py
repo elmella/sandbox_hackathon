@@ -95,7 +95,7 @@ def home_screen(request, user_id):
 @require_http_methods(["GET"])
 def user_profile(request, user_id):
     # Get the user
-    user = User.objects.get(id=user_id)
+    user = Users.objects.get(user_id=user_id)
 
     # Get the rides for the user
     rides = Rides.objects.filter(user_id=user_id)
