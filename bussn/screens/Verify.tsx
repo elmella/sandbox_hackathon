@@ -66,10 +66,10 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
   }, []);
 
   useEffect(() => {
-    if (step === 2 && selfiePhoto) {
+    if (selfiePhoto) {
       uploadBothPhotos();
     }
-  }, [selfiePhoto, step]);
+  }, [selfiePhoto]); // Only trigger when selfiePhoto changes
 
 
   if (!permission) {
@@ -81,14 +81,14 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true };
       const data = await cameraRef.current.takePictureAsync(options);
-  
+
       if (step === 1) {
         setBusPhoto(data);
         setType(CameraType.front); // Flip camera for selfie
         setStep(2); // Move to next step
       } else if (step === 2) {
-        setSelfiePhoto(data); // Just set the selfie photo
-        // uploadBothPhotos will be called in useEffect
+        setSelfiePhoto(data); // Set the selfie photo
+        // Do not change step here
       }
     }
   }

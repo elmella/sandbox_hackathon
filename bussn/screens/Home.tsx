@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
       cameraButton: {
         position: 'absolute',
         right: 25,
-        bottom: 80, // Adjust this value based on the height of your BottomNavigationBar
+        bottom: 100, // Adjust this value based on the height of your BottomNavigationBar
     },
 });
 
