@@ -60,7 +60,6 @@ def check_image(image_url):
     return response.json()["choices"][0]["message"]["content"]
 
 
-
 # def parse_scores(input_string):
 #     cleanliness_score = re.search(r"Cleanliness Score: (\d+)", input_string)
 #     clutter_score = re.search(r"Clutter Score: (\d+)", input_string)

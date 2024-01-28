@@ -40,6 +40,7 @@ def create_ride(request):
         selfie_url = data.get('selfie_url')
         user_location = data.get('location')
         user_location = parse_location(user_location)
+        caption = data.get('caption')
 
         try:
             bus_route = BusRoute.objects.get(bus_id=bus_id)
@@ -63,6 +64,7 @@ def create_ride(request):
             user_id=user_id,
             bus_url=bus_url,
             selfie_url=selfie_url,
+            caption=caption,
         )
         return JsonResponse({'status': 'ride_created'})
 
@@ -87,6 +89,7 @@ def home_screen(request):
         })
     
     return JsonResponse(response, safe=False)
+
 
 @csrf_exempt
 @require_http_methods(["GET"])
