@@ -45,12 +45,13 @@ class Users(models.Model):
     
     
     from django.db import models
+    
 
-class Sponsor(models.Model):
-    sponsor_name = models.CharField(max_length=200)
-    sponsor_logo = models.URLField()
-    sponsor_url = models.URLField()
-    redeem_cost = models.IntegerField()
+class Sponsors(models.Model):
+    sponsor_name = models.CharField(max_length=200, verbose_name="Sponsor Name")
+    sponsor_logo = models.URLField(verbose_name="Sponsor Logo URL")
+    sponsor_url = models.URLField(verbose_name="Sponsor URL")
+    redeem_cost = models.IntegerField(verbose_name="Redeem Cost")
 
     class Meta:
         verbose_name = "Sponsor"
@@ -58,7 +59,4 @@ class Sponsor(models.Model):
 
     def __str__(self):
         return self.sponsor_name
-    
-    
-
 
