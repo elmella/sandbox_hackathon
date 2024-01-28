@@ -91,8 +91,7 @@ def home_screen(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def get(request):
-    user_id = request.GET.get('user_id')
+def user_profile(request, user_id):
     # Get the user
     user = User.objects.get(id=user_id)
 

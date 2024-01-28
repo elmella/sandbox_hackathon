@@ -7,7 +7,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login_view'),  # Login
     path('rides/', views.create_ride, name='verify_rides'),  # Rides
     path('home/', views.home_screen, name='home_screen'),  # Home screen
-    path('account/<int:user_id>/', views.UserProfile, name='user_profile'),
+    path('account/<int:user_id>/', views.user_profile, name='user_profile'),
 ]
 
 # Table to store user metrics (e.g. number of times they've been close to a verified location)
