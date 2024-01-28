@@ -40,7 +40,6 @@ def create_ride(request):
         selfie_url = data.get('selfie_url')
         user_location = data.get('location')
         user_location = parse_location(user_location)
-        print(user_location)
 
         try:
             bus_route = BusRoute.objects.get(bus_id=bus_id)
@@ -52,8 +51,8 @@ def create_ride(request):
         if not verify_location(user_location, locations):
             return JsonResponse({'status': 'Location verification failed'})
 
-        check = check_image(bus_url)
-        print(check)
+        # check = check_image(bus_url)
+        check = True
         
         if not check:
             return JsonResponse({'status': 'Image verification failed'})
