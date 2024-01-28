@@ -74,10 +74,9 @@ def create_ride(request):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def home_screen(request):
-    user_id = request.user.id
+def home_screen(request, user_id):
     user = Users.objects.get(user_id=user_id)
-    rides = Rides.objects.filter(user_id=user_id).values('date_time', 'selfie_url')
+    rides = Rides.objects.filter(user_id=user_id).values('date_time', 'selfie_url', 'caption')
     
     response = []
     for ride in rides:
@@ -86,6 +85,7 @@ def home_screen(request):
             'profile_url': user.profile_url,
             'date_time': ride['date_time'],
             'selfie_url': ride['selfie_url'],
+            'caption': ride['caption'],
         })
     
     return JsonResponse(response, safe=False)
