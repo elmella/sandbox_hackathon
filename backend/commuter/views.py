@@ -117,7 +117,7 @@ def user_profile(request, user_id):
     # Return a JSON response
     return JsonResponse(data)
 
-
+@csrf_exempt
 @require_http_methods(["GET"])
 def redeem_page(request):
     # Get all sponsors from the Sponsor table
