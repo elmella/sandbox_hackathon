@@ -10,7 +10,7 @@ from .models import Rides, BusRoute, Users
 from helper_functions import parse_locations, check_image, verify_location, parse_location
 import json
 from django.http import JsonResponse
-from .models import Rides, Users 
+from .models import Rides, Users, Sponsors
 
 
 @csrf_exempt
@@ -95,7 +95,7 @@ def home_screen(request, user_id):
 @require_http_methods(["GET"])
 def user_profile(request, user_id):
     # Get the user
-    user = User.objects.get(id=user_id)
+    user = Users.objects.get(user_id=user_id)
 
     # Get the rides for the user
     rides = Rides.objects.filter(user_id=user_id)
@@ -117,8 +117,17 @@ def user_profile(request, user_id):
     # Return a JSON response
     return JsonResponse(data)
 
+@csrf_exempt
+@require_http_methods(["GET"])
+def redeem_page(request):
+    # Get all sponsors from the Sponsor table
+    sponsors = Sponsors.objects.all().values('sponsor_name', 'sponsor_logo', 'sponsor_url', 'redeem_cost')
 
+    # Convert the QuerySet to a list so it can be serialized to JSON
+    sponsors_list = list(sponsors)
 
+    # Return a JSON response
+    return JsonResponse(sponsors_list, safe=False)
 
 
 
