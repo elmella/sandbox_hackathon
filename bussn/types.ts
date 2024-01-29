@@ -5,6 +5,8 @@ export type RootStackParamList = {
     Home: undefined;
     Redeem: undefined;
     Account: undefined;
+    SuccessScreen: undefined;
+    FailureScreen: undefined;
 };
 
 

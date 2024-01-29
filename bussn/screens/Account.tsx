@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import BottomNavigationBar from '../components/BottomNavigationBar';
 import { RootStackParamList } from "../types";
@@ -12,15 +12,45 @@ type AccountScreenNavigationProp = StackNavigationProp<
     RootStackParamList,
     'Account'
 >;
+interface ProfileData {
+    profile_url: string;
+    points: number;
+    ride_dates: string[]; // Adjust types according to actual data structure
+  }
 
 const Account = ({ navigation }: { navigation: AccountScreenNavigationProp }) => {
+    const [profileData, setProfileData] = useState<ProfileData | null>(null);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://35.168.193.178/commuter/account/example');
+                const data = await response.json();
+                setProfileData(data);
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (!profileData) {
+        // You can render a loading spinner or a placeholder here
+        return <Text>Loading...</Text>;
+    }
+
+    const profile_url = "https://bussn.s3.us-east-2.amazonaws.com/IMG_7932.JPG"
     return (
         <View style={styles.container}>
             <View style={styles.profileHeader}>
-                <Image source={{ uri: profileData.profile_url }} style={styles.profilePic} />
+                {profileData && <Image source={{ uri: profile_url }} style={styles.profilePic} />}
                 <SettingsSvg width={45} height={45} style={{ margin: 20 }} />
             </View>
             <Text style={styles.pointsText}>My Points:    {profileData.points}</Text>
+            <Text style={styles.pointsText}>Sponsor Account:    $35</Text>
+
             <Text style={styles.calendarText}>Travel days</Text>
             <ScrollView style={styles.scrollView}>
                 <Calendar rideDates={profileData.ride_dates} />
@@ -58,7 +88,7 @@ const styles = StyleSheet.create({
         color: 'white',
         margin: 10,
         alignSelf: 'flex-start',
-        paddingBottom: 20,
+        // paddingBottom: 20,
     },
     calendarText:
     {

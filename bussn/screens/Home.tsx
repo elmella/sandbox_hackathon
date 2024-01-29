@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CameraButton from '../assets/camera-button.svg';
 // import Splashscreen from '../assets/splashscreen.svg';
 
@@ -8,34 +8,59 @@ import { RootStackParamList } from "../types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Colors } from "../globalstyles"
 import PostBox from "../components/PostBox";
-import data from "../home-sample.json";
+// import data from "../home-sample.json";
 
 type HomeScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'Home'
 >;
 
+interface PostData {
+  name: string;
+  date_time: string;
+  selfie_url: string;
+  profile_url: string;
+  caption: string;
+}
 // load data from json file
 
 
-const Home = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
+  const Home = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
+    const [postData, setPostData] = useState<PostData[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://35.168.193.178/commuter/home/example');
+                const data = await response.json();
+                setPostData(data);
+            } catch (error) {
+                console.error('Error fetching post data:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleCameraPress = () => {
         console.log('Camera Button Pressed');
         navigation.navigate('Qrcode');
     };
 
+    const profile_url = "https://bussn.s3.us-east-2.amazonaws.com/IMG_7932.JPG"
+
+
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-              {data.map((item, index) => (
+            {postData.map((item, index) => (
                 
                 <PostBox
                   key={index}
                   name={item.name}
                   dateTime={item.date_time}
                   selfieUrl={item.selfie_url}
-                  profileUrl={item.profile_url}
+                  profileUrl={profile_url}
                   caption={item.caption}
                 />
                 

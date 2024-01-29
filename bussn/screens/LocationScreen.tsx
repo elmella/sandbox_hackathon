@@ -57,7 +57,7 @@ const LocationScreen = ({ navigation }: { navigation: any }) => {
         console.log(JSON.stringify(requestBody));
     
         try {
-            const response = await fetch('http://localhost:8000/commuter/rides/', { // Replace with your server's URL
+            const response = await fetch('http://35.168.193.178/commuter/rides/', { // Replace with your server's URL
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,6 +70,16 @@ const LocationScreen = ({ navigation }: { navigation: any }) => {
             }
     
             const data = await response.json();
+
+            if (data.status === "Location verification failed") {
+                console.log("Location verification failed");
+            navigation.navigate('FailureScreen');
+            setTimeout(() => {
+                navigation.navigate('Home');
+            }, 3000);
+            }
+            else {
+
             console.log('Success:', data);
             
             // Navigate to successScreen
@@ -79,6 +89,7 @@ const LocationScreen = ({ navigation }: { navigation: any }) => {
             setTimeout(() => {
                 navigation.navigate('Home');
             }, 3000);
+            }
     
         } catch (error) {
             console.error('Error:', error);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Colors } from "../globalstyles";
 
@@ -7,32 +7,69 @@ interface RedeemHeaderProps {
 }
 
 const RedeemHeader: React.FC<RedeemHeaderProps> = ({ names }) => {
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = useState(0);
+  const [selectedTab, setSelectedTab] = useState('Coupons'); // State to track the selected tab
 
   return (
-    <View style={styles.header}>
-      <ScrollView
-        horizontal={true}
-        contentContainerStyle={styles.scrollViewContent}
-        showsHorizontalScrollIndicator={false}
-      >
-        {names.map((name, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.button}
-            onPress={() => setSelected(index)}
-          >
-            <Text style={index === selected ? styles.selectedButtonText : styles.buttonText}>
-              {name}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+    <View>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={styles.tabButton}
+          onPress={() => setSelectedTab('Coupons')}>
+          <Text style={selectedTab === 'Coupons' ? styles.selectedTabText : styles.tabText}>
+            Coupons
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tabButton}
+          onPress={() => setSelectedTab('Marketplace')}>
+          <Text style={selectedTab === 'Marketplace' ? styles.selectedTabText : styles.tabText}>
+            Marketplace
+          </Text>
+        </TouchableOpacity>
+        
+      </View>
+      <View style={styles.divider} />
+      <View style={styles.header}>
+        <ScrollView
+          horizontal={true}
+          contentContainerStyle={styles.scrollViewContent}
+          showsHorizontalScrollIndicator={false}
+        >
+          {names.map((name, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.button}
+              onPress={() => setSelected(index)}
+            >
+              <Text style={index === selected ? styles.selectedButtonText : styles.buttonText}>
+                {name}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+  },
+  tabButton: {
+    padding: 10,
+  },
+  tabText: {
+    color: 'white',
+    fontSize: 16,
+  },
+  selectedTabText: {
+    color: Colors.gold,
+    fontSize: 16,
+  },
   header: {
     marginLeft: 20,
     marginTop: 10,
@@ -42,10 +79,8 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     alignItems: "center",
-    // padding: 20,
   },
   button: {
-    // marginRight: 10,
     padding: 10,
     backgroundColor: Colors.charcoal,
     borderRadius: 5,
@@ -53,12 +88,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: 'bold', // Optional: add bold for selected item
+    fontWeight: 'bold',
   },
   selectedButtonText: {
     color: Colors.gold,
     fontSize: 20,
-    fontWeight: 'bold', // Optional: add bold for selected item
+    fontWeight: 'bold',
+  },
+  divider: {
+    height: 5,
+    backgroundColor: 'red', // Use a bright color for visibility
+    width: '100%',
+    alignSelf: 'center', // Ensure it's centered
   },
 });
 

@@ -66,11 +66,21 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
   }, []);
 
   useEffect(() => {
-    if (selfiePhoto) {
+    if (busPhoto && selfiePhoto) {
       uploadBothPhotos();
     }
-  }, [selfiePhoto]); // Only trigger when selfiePhoto changes
-
+  }, [busPhoto, selfiePhoto]); // Trigger when either photo changes
+  
+  useEffect(() => {
+    if (busPhotoUrl && selfiePhotoUrl) {
+      navigation.navigate('LocationScreen', {
+        bus_id: bus_id,
+        bus_url: busPhotoUrl,
+        selfie_url: selfiePhotoUrl
+      });
+    }
+  }, [busPhotoUrl, selfiePhotoUrl]); // Trigger when either URL changes
+  
 
   if (!permission) {
     // Camera permissions are still loading
@@ -96,33 +106,16 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
   
 
   async function uploadBothPhotos() {
-    // setIsLoading(true);
+    if (busPhoto && !busPhotoUrl) {
+      console.log("Uploading bus photo");
+      const uploadedBusPhotoUrl = await uploadToS3(busPhoto, generatePhotoId());
+      setBusPhotoUrl(uploadedBusPhotoUrl as string | null);
+    }
   
-    try {
-      if (busPhoto) {
-        console.log("Uploading bus photo");
-        const busPhotoUrl = await uploadToS3(busPhoto, generatePhotoId());
-        setBusPhotoUrl(busPhotoUrl as string | null);
-      }
-  
-      if (selfiePhoto) {
-        console.log("Uploading selfie photo");
-        const selfiePhotoUrl = await uploadToS3(selfiePhoto, generatePhotoId());
-        setSelfiePhotoUrl(selfiePhotoUrl as string | null);
-      }
-  
-      // Navigate to the LocationScreen if both photos have been successfully uploaded
-      if (busPhotoUrl && selfiePhotoUrl) {
-        navigation.navigate('LocationScreen', {
-          bus_id: bus_id,
-          bus_url: busPhotoUrl,
-          selfie_url: selfiePhotoUrl
-        });
-      }
-    } catch (error) {
-      console.error("Error uploading photos:", error);
-    } finally {
-      // setIsLoading(false);
+    if (selfiePhoto && !selfiePhotoUrl) {
+      console.log("Uploading selfie photo");
+      const uploadedSelfiePhotoUrl = await uploadToS3(selfiePhoto, generatePhotoId());
+      setSelfiePhotoUrl(uploadedSelfiePhotoUrl as string | null);
     }
   }
   
