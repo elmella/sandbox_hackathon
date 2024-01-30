@@ -6,6 +6,7 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 import requests
 import re
+import apikey
 
 
 '''
@@ -22,7 +23,7 @@ def parse_locations(locations_str):
 
 def check_image(image_url):
 
-    api_key = "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"
+    api_key = apikey.api_key
 
     prompt = """
     describe what you see in the image

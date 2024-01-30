@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, ScrollView, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+} from "react-native";
 import { Colors } from "../globalstyles";
 
 interface RedeemHeaderProps {
@@ -8,28 +14,40 @@ interface RedeemHeaderProps {
 
 const RedeemHeader: React.FC<RedeemHeaderProps> = ({ names }) => {
   const [selected, setSelected] = useState(0);
-  const [selectedTab, setSelectedTab] = useState('Coupons'); // State to track the selected tab
+  const [selectedTab, setSelectedTab] = useState("Coupons"); // State to track the selected tab
 
   return (
     <View>
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => setSelectedTab('Coupons')}>
-          <Text style={selectedTab === 'Coupons' ? styles.selectedTabText : styles.tabText}>
+          onPress={() => setSelectedTab("Coupons")}
+        >
+          <Text
+            style={
+              selectedTab === "Coupons"
+                ? styles.selectedTabText
+                : styles.tabText
+            }
+          >
             Coupons
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.tabButton}
-          onPress={() => setSelectedTab('Marketplace')}>
-          <Text style={selectedTab === 'Marketplace' ? styles.selectedTabText : styles.tabText}>
+          onPress={() => setSelectedTab("Marketplace")}
+        >
+          <Text
+            style={
+              selectedTab === "Marketplace"
+                ? styles.selectedTabText
+                : styles.tabText
+            }
+          >
             Marketplace
           </Text>
         </TouchableOpacity>
-        
       </View>
-      <View style={styles.divider} />
       <View style={styles.header}>
         <ScrollView
           horizontal={true}
@@ -42,7 +60,13 @@ const RedeemHeader: React.FC<RedeemHeaderProps> = ({ names }) => {
               style={styles.button}
               onPress={() => setSelected(index)}
             >
-              <Text style={index === selected ? styles.selectedButtonText : styles.buttonText}>
+              <Text
+                style={
+                  index === selected
+                    ? styles.selectedButtonText
+                    : styles.buttonText
+                }
+              >
                 {name}
               </Text>
             </TouchableOpacity>
@@ -55,15 +79,15 @@ const RedeemHeader: React.FC<RedeemHeaderProps> = ({ names }) => {
 
 const styles = StyleSheet.create({
   tabContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginTop: 10,
   },
   tabButton: {
     padding: 10,
   },
   tabText: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
   },
   selectedTabText: {
@@ -88,18 +112,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   selectedButtonText: {
     color: Colors.gold,
     fontSize: 20,
-    fontWeight: 'bold',
-  },
-  divider: {
-    height: 5,
-    backgroundColor: 'red', // Use a bright color for visibility
-    width: '100%',
-    alignSelf: 'center', // Ensure it's centered
+    fontWeight: "bold",
   },
 });
 

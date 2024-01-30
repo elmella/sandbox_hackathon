@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
-import { Colors } from '../globalstyles';
+import React from "react";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { Colors } from "../globalstyles";
 
-const screenWidth = Dimensions.get('window').width;
+const screenWidth = Dimensions.get("window").width;
 
 interface SponsorBoxProps {
   sponsorName: string;
@@ -11,7 +11,12 @@ interface SponsorBoxProps {
   redeemCost: number;
 }
 
-const SponsorBox: React.FC<SponsorBoxProps> = ({ sponsorName, sponsorLogo, sponsorUrl, redeemCost }) => {
+const SponsorBox: React.FC<SponsorBoxProps> = ({
+  sponsorName,
+  sponsorLogo,
+  sponsorUrl,
+  redeemCost,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -33,9 +38,9 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.9,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
   },
   logo: {
@@ -46,23 +51,23 @@ const styles = StyleSheet.create({
   },
   name: {
     flex: 1,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.white,
   },
   redeemCost: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.white,
   },
   sponsorImage: {
-    width: '95%',
+    width: "95%",
     height: 200,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 10,
   },
   divider: {
     height: 3,
     backgroundColor: Colors.grey,
-    width: '100%',
+    width: "100%",
     marginTop: 15,
   },
 });

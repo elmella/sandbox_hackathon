@@ -1,65 +1,58 @@
-import { Camera, CameraType, CameraCapturedPicture, Constants, AutoFocus } from "expo-camera";
+import {
+  Camera,
+  CameraType,
+  CameraCapturedPicture,
+  AutoFocus,
+} from "expo-camera";
 import { useEffect, useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Button,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { Image } from "react-native";
 import { S3 } from "aws-sdk";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
 import { useRoute, RouteProp } from "@react-navigation/native";
+import awsConfig from "../awsConfig";
+import { Colors } from "../globalstyles";
 
-
-type VerifyRouteProp = RouteProp<RootStackParamList, 'Verify'>;
-
-
+type VerifyRouteProp = RouteProp<RootStackParamList, "Verify">;
 
 type VerifyScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  'Verify'
+  "Verify"
 >;
 
-
-
 const s3 = new S3({
-  accessKeyId: "AKIATGM7VQYHQV5QRK5L",
-  secretAccessKey: "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",
-  region: "us-east-2",
+  accessKeyId: awsConfig.accessKeyId,
+  secretAccessKey: awsConfig.secretAccessKey,
+  region: awsConfig.region,
 });
 
-
-
-
-
-const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) => {
+const Verify = ({ navigation }: { navigation: VerifyScreenNavigationProp }) => {
   const route = useRoute<VerifyRouteProp>();
-  const bus_id = route.params.bus_id; // Access the bus_id parameter
-
+  const bus_id = route.params.bus_id;
 
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [step, setStep] = useState(1); // 1 for bus photo, 2 for selfie
+  const [step, setStep] = useState(1);
   const [busPhoto, setBusPhoto] = useState<CameraCapturedPicture | null>(null);
-  const [selfiePhoto, setSelfiePhoto] = useState<CameraCapturedPicture | null>(null);
+  const [selfiePhoto, setSelfiePhoto] = useState<CameraCapturedPicture | null>(
+    null
+  );
   const [busPhotoUrl, setBusPhotoUrl] = useState<string | null>(null);
   const [selfiePhotoUrl, setSelfiePhotoUrl] = useState<string | null>(null);
-  // const [isLoading, setIsLoading] = useState(false);
 
-  
   const cameraRef = useRef<Camera>(null);
 
   const mountedRef = useRef(true);
 
   useEffect(() => {
-    // When the component mounts
     mountedRef.current = true;
 
-    // Cleanup function when the component unmounts
     return () => {
       mountedRef.current = false;
     };
@@ -69,21 +62,19 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
     if (busPhoto && selfiePhoto) {
       uploadBothPhotos();
     }
-  }, [busPhoto, selfiePhoto]); // Trigger when either photo changes
-  
+  }, [busPhoto, selfiePhoto]);
+
   useEffect(() => {
     if (busPhotoUrl && selfiePhotoUrl) {
-      navigation.navigate('LocationScreen', {
+      navigation.navigate("LocationScreen", {
         bus_id: bus_id,
         bus_url: busPhotoUrl,
-        selfie_url: selfiePhotoUrl
+        selfie_url: selfiePhotoUrl,
       });
     }
-  }, [busPhotoUrl, selfiePhotoUrl]); // Trigger when either URL changes
-  
+  }, [busPhotoUrl, selfiePhotoUrl]);
 
   if (!permission) {
-    // Camera permissions are still loading
     return <View />;
   }
 
@@ -94,16 +85,13 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
 
       if (step === 1) {
         setBusPhoto(data);
-        setType(CameraType.front); // Flip camera for selfie
-        setStep(2); // Move to next step
+        setType(CameraType.front);
+        setStep(2);
       } else if (step === 2) {
-        setSelfiePhoto(data); // Set the selfie photo
-        // Do not change step here
+        setSelfiePhoto(data);
       }
     }
   }
-  
-  
 
   async function uploadBothPhotos() {
     if (busPhoto && !busPhotoUrl) {
@@ -111,22 +99,20 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
       const uploadedBusPhotoUrl = await uploadToS3(busPhoto, generatePhotoId());
       setBusPhotoUrl(uploadedBusPhotoUrl as string | null);
     }
-  
+
     if (selfiePhoto && !selfiePhotoUrl) {
       console.log("Uploading selfie photo");
-      const uploadedSelfiePhotoUrl = await uploadToS3(selfiePhoto, generatePhotoId());
+      const uploadedSelfiePhotoUrl = await uploadToS3(
+        selfiePhoto,
+        generatePhotoId()
+      );
       setSelfiePhotoUrl(uploadedSelfiePhotoUrl as string | null);
     }
   }
-  
-  
-  
-  
+
   function generatePhotoId() {
-    return Math.floor(Math.random() * 1000000); // Example ID generation
+    return Math.floor(Math.random() * 1000000);
   }
-  
-  
 
   async function uploadToS3(
     photoData: CameraCapturedPicture | null,
@@ -138,8 +124,8 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
       const blob = await response.blob();
 
       const params = {
-        Bucket: "bussn", // Your bucket name
-        Key: `photo_${photo_id}.jpg`, // File name
+        Bucket: "bussn",
+        Key: `photo_${photo_id}_${Date.now()}.jpg`,
         Body: blob,
         ContentType: "image/jpeg",
       };
@@ -151,7 +137,7 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
             reject(err);
           } else {
             console.log("Successfully uploaded photo:", data);
-            resolve(data.Location); // URL of the uploaded image
+            resolve(data.Location);
           }
         });
       });
@@ -161,71 +147,67 @@ const Verify = ({ navigation,  }: { navigation: VerifyScreenNavigationProp }) =>
   }
 
   if (!permission.granted) {
-    // Camera permissions are not granted yet
     return (
       <View style={styles.container}>
-        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Text style={{ textAlign: "center" }}>
+          We need your permission to show the camera
+        </Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
   }
 
-  function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
-  }
-
-
-
   return (
     <View style={styles.container}>
-<Camera
-  style={styles.camera} 
-  type={type}
-  ref={cameraRef}
-  autoFocus={AutoFocus.on}
->
-      <Text style={styles.instructionText}>
-        {step === 1 ? "Take a photo of the bus" : "Now take a photo of yourself!"}
-      </Text>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={takePicture}>
-          <Text style={styles.text}>Take Photo</Text>
-        </TouchableOpacity>
-      </View>
-    </Camera>
-    {/* {isLoading && <ActivityIndicator size="large" />} */}
-  </View>
+      <Camera
+        style={styles.camera}
+        type={type}
+        ref={cameraRef}
+        autoFocus={AutoFocus.on}
+      >
+        <Text style={styles.instructionText}>
+          {step === 1
+            ? "Take a photo of the bus"
+            : "Now take a photo of yourself!"}
+        </Text>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>Take Photo</Text>
+          </TouchableOpacity>
+        </View>
+      </Camera>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   camera: {
     flex: 1,
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
+    flexDirection: "row",
+    backgroundColor: "transparent",
     margin: 64,
   },
   button: {
     flex: 1,
-    alignSelf: 'flex-end',
-    alignItems: 'center',
+    alignSelf: "flex-end",
+    alignItems: "center",
   },
   text: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: Colors.white,
   },
   instructionText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
     margin: 20,
   },
 });

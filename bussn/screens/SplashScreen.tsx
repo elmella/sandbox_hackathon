@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Splashscreen from '../assets/splashscreen.svg';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Splashscreen from "../assets/splashscreen.svg";
 
 const SplashScreen = () => {
   return (
@@ -13,9 +13,8 @@ const SplashScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff', // or any color that suits your splash screen
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

@@ -1,9 +1,8 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native';
-import { Colors } from '../globalstyles';
+import React from "react";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { Colors } from "../globalstyles";
 
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get("window").width;
 
 interface PostBoxProps {
   name: string;
@@ -13,7 +12,13 @@ interface PostBoxProps {
   caption: string;
 }
 
-const PostBox: React.FC<PostBoxProps> = ({ name, dateTime, selfieUrl, profileUrl, caption }) => {
+const PostBox: React.FC<PostBoxProps> = ({
+  name,
+  dateTime,
+  selfieUrl,
+  profileUrl,
+  caption,
+}) => {
   return (
     <View style={styles.postContainer}>
       <View style={styles.header}>
@@ -23,7 +28,7 @@ const PostBox: React.FC<PostBoxProps> = ({ name, dateTime, selfieUrl, profileUrl
       <Image source={{ uri: selfieUrl }} style={styles.selfie} />
       <Text style={styles.dateTime}>{dateTime}</Text>
       <Text style={styles.caption}>{caption}</Text>
-        <View style={styles.divider} />
+      <View style={styles.divider} />
     </View>
   );
 };
@@ -32,14 +37,12 @@ const styles = StyleSheet.create({
   postContainer: {
     backgroundColor: Colors.charcoal,
     borderRadius: 10,
-    // padding: 10,
     margin: 10,
     width: screenWidth * 0.9,
-
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   profilePic: {
     width: 40,
@@ -48,16 +51,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   name: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.white,
-
   },
   selfie: {
-    width: '95%',
+    width: "95%",
     height: 200,
     marginTop: 10,
     borderRadius: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   dateTime: {
     marginTop: 10,
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   divider: {
     height: 3,
     backgroundColor: Colors.grey,
-    width: '100%',
+    width: "100%",
     marginTop: 15,
   },
 });
