@@ -52,8 +52,8 @@ def create_ride(request):
         if not verify_location(user_location, locations):
             return JsonResponse({'status': 'Location verification failed'})
 
-        # check = check_image(bus_url)
-        check = True
+        check = check_image(bus_url)
+        # check = True
         
         if not check:
             return JsonResponse({'status': 'Image verification failed'})

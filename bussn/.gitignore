@@ -31,7 +31,9 @@ yarn-error.*
 # local env files
 .env*.local
 awsConfig.ts
-apikey.py
+backend/apikey.py
 
 # typescript
 *.tsbuildinfo
+
+backend/bussn_server/settings.py

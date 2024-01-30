@@ -26,7 +26,11 @@ def check_image(image_url):
     api_key = apikey.api_key
 
     prompt = """
-    describe what you see in the image
+    Carefully analyze the provided photo.
+    Determine whether there is an object that can be clearly identified as a bus, 
+    considering its size, shape, and distinguishing features typical of a bus. 
+    Ignore other large vehicles such as trucks or vans. 
+    Respond with 'True' if a bus is definitely present and 'False' if there is no bus or if you are unsure.
     """
     
     headers = {
@@ -61,21 +65,12 @@ def check_image(image_url):
     return response.json()["choices"][0]["message"]["content"]
 
 
-# def parse_scores(input_string):
-#     cleanliness_score = re.search(r"Cleanliness Score: (\d+)", input_string)
-#     clutter_score = re.search(r"Clutter Score: (\d+)", input_string)
-
-#     if cleanliness_score and clutter_score:
-#         return int(cleanliness_score.group(1)), int(clutter_score.group(1))
-#     else:
-#         return None, None
-
 
 def verify_location(user_location, specific_locations, threshold=0.5):
     try:
         for location in specific_locations:
-            distance = geodesic(user_location, location).miles  # You can change 'miles' to 'km' if you prefer kilometers
-            if distance < threshold:  # Replace 'threshold' with the maximum distance you consider to be 'close'
+            distance = geodesic(user_location, location).miles
+            if distance < threshold:  
                 return True
 
     except Exception as e:
@@ -97,12 +92,4 @@ def parse_location(location_str):
     # Convert each part to a float and return as a tuple
     return tuple(float(part) for part in parts)
 
-
-# from django.http import JsonResponse
-# from .models import BusRoute
-
-# def view_bus_routes(request):
-#     bus_routes = BusRoute.objects.all()
-#     bus_routes_list = list(bus_routes.values())
-#     return bus_routes_list
 
